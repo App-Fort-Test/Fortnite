@@ -100,7 +100,7 @@ Para desenvolvimento local, você pode criar um arquivo `.env` na pasta `Font/Fo
 VITE_API_BASE_URL=http://localhost:5155/api
 ```
 
-No Docker, a URL da API é configurada automaticamente via proxy reverso.
+**Nota:** No Docker, a URL da API é configurada automaticamente como `/api` (proxy reverso via nginx). Não é necessário criar arquivo `.env` ao usar Docker.
 
 ### Banco de Dados
 
@@ -263,6 +263,39 @@ Font/FortniteFront/
 - Cache é limpo automaticamente após compras/devoluções para garantir dados atualizados
 - Swagger está disponível apenas em ambiente de desenvolvimento
 
+## 🐳 Docker
+
+### Estrutura Docker
+
+- **Backend**: Imagem baseada em `mcr.microsoft.com/dotnet/aspnet:8.0`
+- **Frontend**: Build multi-stage com Node.js 18 e Nginx Alpine
+- **Network**: Rede Docker isolada para comunicação entre serviços
+- **Volumes**: Banco de dados SQLite persistido em volume
+
+### Comandos Docker Úteis
+
+```bash
+# Iniciar containers
+docker-compose up -d
+
+# Ver logs
+docker-compose logs -f
+
+# Parar containers
+docker-compose down
+
+# Rebuild após mudanças
+docker-compose up --build --force-recreate
+
+# Limpar tudo (incluindo volumes)
+docker-compose down -v
+docker system prune -a
+```
+
+### Configuração de Proxy Reverso
+
+O frontend usa Nginx como proxy reverso para redirecionar requisições `/api/*` para o backend. Isso permite que o frontend acesse a API através de URLs relativas, facilitando o deploy em diferentes ambientes.
+
 ## 🔧 Troubleshooting
 
 ### Erro de CORS
@@ -273,5 +306,4 @@ Se o SQLite estiver bloqueado, certifique-se de que não há outras instâncias 
 
 ### Porta já em uso
 Se a porta 5155 estiver em uso, você pode alterar no arquivo `Back/Properties/launchSettings.json`.
-
 

@@ -194,3 +194,5 @@ A interface deve ser responsiva e acessível em desktop e mobile.
 
 O projeto AartFortnite foi concebido e detalhado utilizando o Figma como principal ferramenta de design e prototipagem.
 
+Figma\Interfaces\Figma.png
+
